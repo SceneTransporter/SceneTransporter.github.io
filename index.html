@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SceneTransporter: Optimal Transport-Guided Compositional Latent Diffusion for Single-Image Structured 3D Scene Generation</title>
+  <title>ICLR 2026</title>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script> -->
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.1.1/model-viewer.min.js"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@latest/dist/model-viewer.min.js"></script>
+  
+  <!-- Three.js and dependencies for partviewer -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <style>
+    model-viewer {
+      width: 400px;
+      height: 200px;
+    }
+    
+    /* Partviewer styles */
+    .partviewer {
+      font-family: Arial, sans-serif;
+    }
+
+    #loading-overlay {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255, 255, 255, 0.3);
+      border-top: 5px solid white;
+      border-radius: 0%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    #viewer-container {
+      height: 500px;
+      border: 1px solid #ccc;
+      margin: 20px auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .partviewer button {
+      margin: 5px;
+      padding: 8px 12px;
+      font-size: 14px;
+      border: none;
+      background-color: #ffffff;
+      color: white;
+      border-radius: 0px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .partviewer button:hover {
+      background-color: #63057a;
+    }
+
+    .partviewer #button-block {
+      text-align: center;
+      margin: 20px auto;
+    }
+
+    #button-block input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 400px;
+      height: 12px;
+      background: linear-gradient(to right, #e1bee7, #7b1fa2);
+      border-radius: 0px;
+      outline: none;
+      transition: background 0.3s;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    #button-block input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 3px solid #3b0434;
+      cursor: pointer;
+      transition: transform 0.2s, background-color 0.3s;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    #button-block input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.3);
+      background-color: #ede7f6;
+    }
+
+    #button-block input[type="range"]::-moz-range-thumb {
+      width: 25px;
+      height: 25px;
+      border-radius: 0%;
+      background: hsl(0, 0%, 100%);
+      border: 3px solid #ffffff;
+      cursor: pointer;
+      transition: transform 0.2s, background-color 0.3s;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    #button-block input[type="range"]::-moz-range-thumb:hover {
+      transform: scale(1.3);
+      background-color: #ede7f6;
+    }
+
+    #button-block input[type="range"]::-ms-thumb {
+      width: 25px;
+      height: 25px;
+      border-radius: 0%;
+      background: #ffffff;
+      border: 3px solid #ffffff;
+      cursor: pointer;
+      transition: transform 0.2s, background-color 0.3s;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    #button-block input[type="range"]::-ms-thumb:hover {
+      transform: scale(1.3);
+      background-color: #ede7f6;
+    }
+
+    #button-block span {
+      font-size: 18px;
+      font-weight: bold;
+      margin-right: 15px;
+    }
+
+    .swiper {
+      width: 100%;
+      max-width: 100%;
+      height: 200px;
+      background: #ffffff;
+      margin: 0 auto;
+      position: relative;
+      padding: 0 50px !important;
+    }
+
+    .swiper-wrapper {
+      display: flex;
+    }
+
+    .swiper-slide {
+      flex: 0 0 calc((100% - 40px) / 5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .swiper-slide img {
+      width: 150px;
+      height: auto;
+      border-radius: 0px;
+      cursor: pointer;
+      object-fit: cover;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+      border: 2px solid transparent;
+    }
+
+    .swiper-slide img:hover {
+      transform: scale(1.1);
+    }
+  </style> 
+</head>
+<body>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">SceneTransporter: Optimal Transport-Guided Compositional Latent Diffusion for Single-Image Structured 3D Scene Generation</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a >Anonymous Author</a><sup></sup></span>
+          </div>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup></sup>Anonymous Institution</span> 
+          </div>
+        </div>
+      </div>
+
+
+    <div class="column has-text-centered">
+        <div class="publication-links">
+          <!-- Code Link. -->
+          <span class="link-block">
+            <a href="https://github.com/SceneTransporter/SceneTransporter_Code"
+               class="external-link button is-normal is-rounded is-dark">
+              <span class="icon">
+                  <i class="fab fa-github"></i>
+              </span>
+              <span>Code</span>
+              </a>
+          </span>
+          <!-- Dataset Link. -->
+          <span class="link-block">
+            <a href="https://github.com/SceneTransporter/SceneTransporter"
+               class="external-link button is-normal is-rounded is-dark">
+              <span class="icon">
+                  <i class="far fa-images"></i>
+              </span>
+              <span>Project</span>
+              </a>
+        </div>
+  
+      </div>
+
+
+  </div>
+</section>
+<!-- controls -->
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <img src="./static/media/pipeline.png" alt="Pipeline" style="width:100%;display:block;margin:auto;">
+      <h2 class="subtitle has-text-centered">
+        <span class="dnerf">SceneTransporter</span> generate 3D scenes with Optimal-Transport-Guided DiT.
+      </h2>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            We introduce SceneTransporter, an end-to-end framework for structured 3D scene generation from a single image. While existing methods generate part-level 3D objects, they often fail to organize these parts into distinct instances in open-world scenes. Through a debiased clustering probe, we reveal a critical insight: this failure stems from the lack of structural constraints within the model's internal assignment mechanism. Based on this finding, we reframe the task of structured 3D scene generation as a global correlation assignment problem. To solve this, SceneTransporter formulates and solves an entropic Optimal Transport (OT) objective within the denoising loop of the compositional DiT model. This formulation imposes two powerful structural constraints. First, the resulting transport plan gates cross-attention to enforce an exclusive, one-to-one routing of image patches to part-level 3D latents, preventing entanglement. Second, the competitive nature of the transport encourages the grouping of similar patches, a process that is further regularized by an edge-based cost, to form coherent objects and prevent fragmentation.  Extensive experiments show that SceneTransporter outperforms existing methods on open-world scene generation, significantly improving instance-level coherence and geometric fidelity.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+  </div>
+</section>
+
+
+
+<!-- Interactive 3D Viewer Section -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="has-text-centered">
+      <h2 class="title is-3">Interactive Results</h2>
+    </div>
+    <div class="partviewer">
+      <!-- Scene Viewer -->
+      <div id="loading-overlay" style="display: none;">
+        <div class="loading-spinner"></div>
+      </div>
+      <div id="viewer-container"></div>
+      <div id="button-block" style="text-align: center; margin: 10px auto;">
+        <div style="display: flex; align-items: center; justify-content: center; margin: 10px;">
+          <span style="margin-right: 10px; font-weight: bold;">Explode: </span>
+          <input type="range" min="0" max="1" step="0.01" style="width: 300px;">
+        </div>
+      </div>
+      <div class="swiper">
+        <div class="swiper-button-prev" tabindex="0" role="button" aria-label="Previous slide" aria-controls="image-slider"></div>
+        <div class="swiper-button-next" tabindex="0" role="button" aria-label="Next slide" aria-controls="image-slider"></div>
+        <div class="swiper-wrapper" id="image-slider" aria-live="polite">
+          <!-- <div class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 1">
+            <img src="static\meshes\room1.jpg" alt="Model 1">
+          </div> -->
+          <!-- <div class="swiper-slide swiper-slide-next" role="group" aria-label="2 / 2">
+            <img src="static\meshes\hand.jpg" alt="Model 2">
+          </div> -->
+          
+        </div>
+        <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Comparison Methods Section -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="has-text-centered">
+      <h2 class="title is-3">Comparison Methods</h2>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-one-third">
+        <div class="has-text-centered">
+          <h3 class="title is-4">MIDI</h3>
+          <div id="midi-viewer-container" style="height: 300px; border: 1px solid #ccc; margin: 10px auto; position: relative; overflow: hidden;"></div>
+          <div style="text-align: center; margin: 10px;">
+            <span style="margin-right: 10px; font-weight: bold; font-size: 14px;">Explode: </span>
+            <input type="range" id="midi-explode-slider" min="0" max="1" step="0.01" value="0" style="width: 200px;">
+          </div>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="has-text-centered">
+          <h3 class="title is-4">PartCrafter</h3>
+          <div id="partcrafter-viewer-container" style="height: 300px; border: 1px solid #ccc; margin: 10px auto; position: relative; overflow: hidden;"></div>
+          <div style="text-align: center; margin: 10px;">
+            <span style="margin-right: 10px; font-weight: bold; font-size: 14px;">Explode: </span>
+            <input type="range" id="partcrafter-explode-slider" min="0" max="1" step="0.01" value="0" style="width: 200px;">
+          </div>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="has-text-centered">
+          <h3 class="title is-4">PartPacker</h3>
+          <div id="partpacker-viewer-container" style="height: 300px; border: 1px solid #ccc; margin: 10px auto; position: relative; overflow: hidden;"></div>
+          <div style="text-align: center; margin: 10px;">
+            <span style="margin-right: 10px; font-weight: bold; font-size: 14px;">Explode: </span>
+            <input type="range" id="partpacker-explode-slider" min="0" max="1" step="0.01" value="0" style="width: 200px;">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <script type="module" src="./static/js/partviewer.js?v=9"></script>
+
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Related Links</h2>
+
+        <div class="content has-text-justified">
+          <p>
+            There are a lot of excellent works that are related to our works.
+          </p>
+          <p>
+            <a href="https://github.com/NVlabs/PartPacker?tab=readme-ov-file">PartPacker: Efficient Part-level 3D Object Generation via Dual Volume Packing</a>
+          </p>
+          <p>
+            <a href="https://arxiv.org/abs/2506.05573">PartCrafter: Structured 3D Mesh Generation via Compositional Latent Diffusion Transformers</a>
+          </p>
+          <p>
+            <a href="https://arxiv.org/abs/2412.03558">MIDI: Multi-Instance Diffusion for Single Image to 3D Scene Generation</a>
+          </p>
+
+
+
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</section>
+
+
+</body>
+</html>

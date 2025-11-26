@@ -39,7 +39,7 @@
   <script src="./static/js/index.js"></script>
   <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.1.1/model-viewer.min.js"></script>
   <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@latest/dist/model-viewer.min.js"></script>
-  
+
   <!-- Three.js and dependencies for partviewer -->
   <script type="importmap">
     {
@@ -386,8 +386,146 @@
 
   <script type="module" src="./static/js/partviewer.js?v=9"></script>
 
+<section class="section">
+  <div class="container is-max-desktop">
+    
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">📷 Real-World Images 📷</h2>
+        
+        <div class="content has-text-justified">
+          <p>
+            We evaluated our model using real-world object images from the 
+            <a href="https://github.com/facebookresearch/co3d" target="_blank">CO3D dataset</a>. 
+            Since our model was trained on rendered images from Objaverse, we observed that directly testing it on real-world images led to suboptimal performance due to the domain gap.
+          </p>
+          <p>
+            To address this issue, we <strong>stylized the input images to resemble 3D renderings</strong> 
+            before feeding them into the model, which significantly improved the results. We used 
+            <a href="https://www.doubao.com/" target="_blank">Doubao</a>'s raw image transformation feature with the following prompt: 
+            <em>"Preserve all details and perform image-to-image style transfer to convert the image into the style of a 3D rendering (Objaverse-style rendering)."</em>
+          </p>
+        </div>
+        
+      </div>
+    </div>
 
+  </div>
+</section>
 
+<section class="section">
+  <div class="container is-max-desktop">
+    
+    <div style="display: flex; justify-content: center; align-items: center; gap: 10px; width: 100%; height: 150px; margin-bottom: 10px;">
+      <div style="flex: 1; min-width: 0; height: 100%;">
+        <img src="./static/real_web/image0.jpg" class="thumb" style="width: 100%; height: 100%; object-fit: fill;">
+      </div>
+      <div style="flex: 1; min-width: 0; height: 100%;">
+        <model-viewer src="./static/real_web/image0_0.glb" autoplay auto-rotate environment-image="./static/bkgd.jpeg" shadow-intensity="1" orientation="0deg 0deg 0deg" style="width: 100%; height: 100%; background: linear-gradient(#ffffff, #aaaaaa);" camera-controls touch-action="pan-y"></model-viewer>
+      </div>
+      <div style="flex: 1; min-width: 0; height: 100%;">
+        <img src="./static/real_web/image0_g.png" class="thumb" style="width: 100%; height: 100%; object-fit: fill;">
+      </div>
+      <div style="flex: 1; min-width: 0; height: 100%;">
+        <model-viewer src="./static/real_web/image0_1.glb" autoplay auto-rotate environment-image="./static/bkgd.jpeg" shadow-intensity="1" orientation="0deg 0deg 0deg" style="width: 100%; height: 100%; background: linear-gradient(#ffffff, #aaaaaa);" camera-controls touch-action="pan-y"></model-viewer>
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: center; align-items: center; gap: 10px; width: 100%; height: 150px; margin-bottom: 10px;">
+      <div style="flex: 1; min-width: 0; height: 100%;">
+        <img src="./static/real_web/image2.jpg" class="thumb" style="width: 100%; height: 100%; object-fit: fill;">
+      </div>
+      <div style="flex: 1; min-width: 0; height: 100%;">
+        <model-viewer src="./static/real_web/image2_0.glb" autoplay auto-rotate environment-image="./static/bkgd.jpeg" shadow-intensity="1" orientation="0deg 0deg 0deg" style="width: 100%; height: 100%; background: linear-gradient(#ffffff, #aaaaaa);" camera-controls touch-action="pan-y"></model-viewer>
+      </div>
+      <div style="flex: 1; min-width: 0; height: 100%;">
+        <img src="./static/real_web/image2_g.png" class="thumb" style="width: 100%; height: 100%; object-fit: fill;">
+      </div>
+      <div style="flex: 1; min-width: 0; height: 100%;">
+        <model-viewer src="./static/real_web/image2_1.glb" autoplay auto-rotate environment-image="./static/bkgd.jpeg" shadow-intensity="1" orientation="0deg 0deg 0deg" style="width: 100%; height: 100%; background: linear-gradient(#ffffff, #aaaaaa);" camera-controls touch-action="pan-y"></model-viewer>
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: center; align-items: center; gap: 10px; width: 100%; height: 150px; margin-bottom: 10px;">
+      <div style="flex: 1; min-width: 0; height: 100%;">
+        <img src="./static/real_web/image4.jpg" class="thumb" style="width: 100%; height: 100%; object-fit: fill;">
+      </div>
+      <div style="flex: 1; min-width: 0; height: 100%;">
+        <model-viewer src="./static/real_web/image4_0.glb" autoplay auto-rotate environment-image="./static/bkgd.jpeg" shadow-intensity="1" orientation="0deg 0deg 0deg" style="width: 100%; height: 100%; background: linear-gradient(#ffffff, #aaaaaa);" camera-controls touch-action="pan-y"></model-viewer>
+      </div>
+      <div style="flex: 1; min-width: 0; height: 100%;">
+        <img src="./static/real_web/image4_g.png" class="thumb" style="width: 100%; height: 100%; object-fit: fill;">
+      </div>
+      <div style="flex: 1; min-width: 0; height: 100%;">
+        <model-viewer src="./static/real_web/image4_1.glb" autoplay auto-rotate environment-image="./static/bkgd.jpeg" shadow-intensity="1" orientation="0deg 0deg 0deg" style="width: 100%; height: 100%; background: linear-gradient(#ffffff, #aaaaaa);" camera-controls touch-action="pan-y"></model-viewer>
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: center; align-items: center; gap: 10px; width: 100%; height: 150px; margin-bottom: 10px;">
+      <div style="flex: 1; min-width: 0; height: 100%;">
+        <img src="./static/real_web/image5.jpg" class="thumb" style="width: 100%; height: 100%; object-fit: fill;">
+      </div>
+      <div style="flex: 1; min-width: 0; height: 100%;">
+        <model-viewer src="./static/real_web/image5_0.glb" autoplay auto-rotate environment-image="./static/bkgd.jpeg" shadow-intensity="1" orientation="0deg 0deg 0deg" style="width: 100%; height: 100%; background: linear-gradient(#ffffff, #aaaaaa);" camera-controls touch-action="pan-y"></model-viewer>
+      </div>
+      <div style="flex: 1; min-width: 0; height: 100%;">
+        <img src="./static/real_web/image5_g.png" class="thumb" style="width: 100%; height: 100%; object-fit: fill;">
+      </div>
+      <div style="flex: 1; min-width: 0; height: 100%;">
+        <model-viewer src="./static/real_web/image5_1.glb" autoplay auto-rotate environment-image="./static/bkgd.jpeg" shadow-intensity="1" orientation="0deg 0deg 0deg" style="width: 100%; height: 100%; background: linear-gradient(#ffffff, #aaaaaa);" camera-controls touch-action="pan-y"></model-viewer>
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: center; align-items: center; gap: 10px; width: 100%; height: 150px; margin-bottom: 10px;">
+      <div style="flex: 1; min-width: 0; height: 100%;">
+        <img src="./static/real_web/image6.jpg" class="thumb" style="width: 100%; height: 100%; object-fit: fill;">
+      </div>
+      <div style="flex: 1; min-width: 0; height: 100%;">
+        <model-viewer src="./static/real_web/image6_0.glb" autoplay auto-rotate environment-image="./static/bkgd.jpeg" shadow-intensity="1" orientation="0deg 0deg 0deg" style="width: 100%; height: 100%; background: linear-gradient(#ffffff, #aaaaaa);" camera-controls touch-action="pan-y"></model-viewer>
+      </div>
+      <div style="flex: 1; min-width: 0; height: 100%;">
+        <img src="./static/real_web/image6_g.png" class="thumb" style="width: 100%; height: 100%; object-fit: fill;">
+      </div>
+      <div style="flex: 1; min-width: 0; height: 100%;">
+        <model-viewer src="./static/real_web/image6_1.glb" autoplay auto-rotate environment-image="./static/bkgd.jpeg" shadow-intensity="1" orientation="0deg 0deg 0deg" style="width: 100%; height: 100%; background: linear-gradient(#ffffff, #aaaaaa);" camera-controls touch-action="pan-y"></model-viewer>
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: center; align-items: center; gap: 10px; width: 100%; height: 150px; margin-bottom: 10px;">
+      <div style="flex: 1; min-width: 0; height: 100%;">
+        <img src="./static/real_web/image7.jpg" class="thumb" style="width: 100%; height: 100%; object-fit: fill;">
+      </div>
+      <div style="flex: 1; min-width: 0; height: 100%;">
+        <model-viewer src="./static/real_web/image7_0.glb" autoplay auto-rotate environment-image="./static/bkgd.jpeg" shadow-intensity="1" orientation="0deg 0deg 0deg" style="width: 100%; height: 100%; background: linear-gradient(#ffffff, #aaaaaa);" camera-controls touch-action="pan-y"></model-viewer>
+      </div>
+      <div style="flex: 1; min-width: 0; height: 100%;">
+        <img src="./static/real_web/image7_g.png" class="thumb" style="width: 100%; height: 100%; object-fit: fill;">
+      </div>
+      <div style="flex: 1; min-width: 0; height: 100%;">
+        <model-viewer src="./static/real_web/image7_1.glb" autoplay auto-rotate environment-image="./static/bkgd.jpeg" shadow-intensity="1" orientation="0deg 0deg 0deg" style="width: 100%; height: 100%; background: linear-gradient(#ffffff, #aaaaaa);" camera-controls touch-action="pan-y"></model-viewer>
+      </div>
+    </div>
+    <div style="display: flex; justify-content: center; align-items: center; gap: 10px; width: 100%; margin-top: 5px;">
+      
+      <div style="flex: 1; text-align: center; font-weight: bold; font-size: 1.1em;">
+        Image
+      </div>
+
+      <div style="flex: 1; text-align: center; font-weight: bold; font-size: 1.1em;">
+        Result
+      </div>
+
+      <div style="flex: 1; text-align: center; font-weight: bold; font-size: 1.1em;">
+        Stylized-Image
+      </div>
+
+      <div style="flex: 1; text-align: center; font-weight: bold; font-size: 1.1em;">
+        Stylized-Result
+      </div>
+
+    </div>
+  </div>
+</section>
 
 <section class="section">
   <div class="container is-max-desktop">
